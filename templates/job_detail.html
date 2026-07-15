@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}{{ job.title }} | Career Pulse{% endblock %}
+
+{% block extra_style %}
+    .container {
+        max-width: 680px;
+        margin: 40px auto;
+        padding: 0 20px 64px;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-bottom: 16px;
+        color: var(--blue);
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+
+    .job-header {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 28px 32px;
+        margin-bottom: 20px;
+    }
+
+    .job-header .company-name {
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-bottom: 6px;
+    }
+
+    .job-header h1 {
+        margin: 0 0 16px;
+        font-size: 1.7rem;
+    }
+
+    .job-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 18px;
+    }
+
+    .job-tags span {
+        background: var(--tag-bg);
+        color: #334155;
+        font-size: 0.85rem;
+        padding: 6px 12px;
+        border-radius: 8px;
+    }
+
+    .job-header .desc {
+        color: #374151;
+        line-height: 1.7;
+    }
+
+    .apply-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 28px 32px;
+    }
+
+    .apply-card h2 {
+        margin: 0 0 20px;
+        font-size: 1.1rem;
+    }
+
+    form p {
+        margin: 0 0 18px;
+    }
+
+    form label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    form input[type="text"],
+    form input[type="email"] {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 15px;
+    }
+
+    form input[type="text"]:focus,
+    form input[type="email"]:focus {
+        outline: none;
+        border-color: var(--blue);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    form input[type="file"] {
+        width: 100%;
+        padding: 10px 0;
+        font-size: 14px;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        margin-top: 8px;
+        background: var(--navy);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+        background: #1e293b;
+    }
+
+    .login-note {
+        text-align: center;
+        color: var(--muted);
+        font-size: 14px;
+    }
+
+    .login-note a {
+        color: var(--blue);
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .login-note a:hover {
+        text-decoration: underline;
+    }
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <a href="{% url 'dashboard' %}" class="back-link">&larr; Back to Jobs</a>
+
+        <div class="job-header">
+            <div class="company-name">{{ job.company.name }}</div>
+            <h1>{{ job.title }}</h1>
+            <div class="job-tags">
+                <span>📍 {{ job.company.location|default:"Location not available" }}</span>
+                <span>💰 Rs. {{ job.salary|floatformat:0 }}</span>
+                <span>🗓️ {{ job.start_date }} &ndash; {{ job.end_date }}</span>
+            </div>
+            {% if job.description %}
+            <p class="desc">{{ job.description }}</p>
+            {% endif %}
+        </div>
+
+        {% if request.user.is_authenticated %}
+        <div class="apply-card">
+            <h2>Apply for this job</h2>
+            <form method="POST" action="{% url 'handle-applicant' job.id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form }}
+                <input type="hidden" name="job" value="{{ job.id }}" />
+                <button type="submit">Submit Application</button>
+            </form>
+        </div>
+        {% else %}
+        <p class="login-note">Please <a href="{% url 'user-login' %}">login</a> to apply for this job.</p>
+        {% endif %}
+    </div>
+{% endblock %}

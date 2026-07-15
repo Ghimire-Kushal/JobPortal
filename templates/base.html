@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Career Pulse{% endblock %}</title>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    :root {
+        --navy: #0f172a;
+        --blue: #2563eb;
+        --muted: #64748b;
+        --border: #e2e8f0;
+        --bg: #f8fafc;
+        --tag-bg: #eef2f7;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        background: var(--bg);
+        color: var(--navy);
+    }
+
+    a {
+        color: inherit;
+    }
+
+    .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 48px;
+        background: #fff;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .navbar .logo {
+        font-size: 1.4rem;
+        font-weight: 800;
+        text-decoration: none;
+        color: var(--navy);
+    }
+
+    .navbar .logo span {
+        color: var(--blue);
+    }
+
+    .navbar .nav-links {
+        display: flex;
+        gap: 32px;
+        font-weight: 600;
+        color: #334155;
+    }
+
+    .navbar .nav-links a {
+        text-decoration: none;
+        color: #334155;
+    }
+
+    .navbar .nav-links a:hover {
+        color: var(--blue);
+    }
+
+    .navbar .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        text-decoration: none;
+        cursor: pointer;
+        border: 1px solid transparent;
+    }
+
+    .btn-outline {
+        background: #fff;
+        border-color: var(--border);
+        color: var(--navy);
+    }
+
+    .btn-outline:hover {
+        border-color: var(--navy);
+    }
+
+    .btn-dark {
+        background: var(--navy);
+        color: #fff;
+        border: none;
+    }
+
+    .btn-dark:hover {
+        background: #1e293b;
+    }
+
+    .nav-user {
+        font-size: 0.9rem;
+        color: var(--muted);
+        margin-right: 4px;
+    }
+
+    @media (max-width: 800px) {
+        .navbar {
+            flex-direction: column;
+            gap: 14px;
+            padding: 18px 20px;
+        }
+
+        .navbar .nav-links {
+            gap: 20px;
+        }
+    }
+
+    {% block extra_style %}{% endblock %}
+</style>
+</head>
+<body>
+    <nav class="navbar">
+        <a class="logo" href="{% url 'dashboard' %}">Career<span>Pulse</span></a>
+        <div class="nav-links">
+            <a href="{% url 'dashboard' %}">Jobs</a>
+            <a href="/admin2/">Employer Board</a>
+        </div>
+        <div class="nav-actions">
+            {% if request.user.is_authenticated %}
+                <span class="nav-user">Welcome, {{ request.user.username }}</span>
+                <form method="POST" action="{% url 'logout' %}" style="margin:0;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline">Log Out</button>
+                </form>
+            {% else %}
+                <a href="{% url 'user-login' %}" class="btn btn-outline">Log In</a>
+                <a href="{% url 'user-register' %}" class="btn btn-dark">Sign Up</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+</body>
+</html>
+</content>

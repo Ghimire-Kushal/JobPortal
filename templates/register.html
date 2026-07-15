@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up | Career Pulse{% endblock %}
+
+{% block extra_style %}
+    .auth-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 64px 20px;
+    }
+
+    .auth-card {
+        background: #fff;
+        width: 100%;
+        max-width: 400px;
+        padding: 40px 36px;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+    }
+
+    .auth-card h1 {
+        margin: 0 0 8px;
+        font-size: 1.6rem;
+        text-align: center;
+    }
+
+    .auth-card p.subtitle {
+        margin: 0 0 28px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 14px;
+    }
+
+    form p {
+        margin: 0 0 18px;
+    }
+
+    form label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    form input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 15px;
+    }
+
+    form input:focus {
+        outline: none;
+        border-color: var(--blue);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        margin-top: 8px;
+        background: var(--navy);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+        background: #1e293b;
+    }
+
+    .switch-link {
+        margin: 20px 0 0;
+        text-align: center;
+        font-size: 14px;
+        color: var(--muted);
+    }
+
+    .switch-link a {
+        color: var(--blue);
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .switch-link a:hover {
+        text-decoration: underline;
+    }
+
+    .errorlist {
+        list-style: none;
+        margin: 0 0 12px;
+        padding: 10px 14px;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        color: #b91c1c;
+        font-size: 13px;
+    }
+{% endblock %}
+
+{% block content %}
+    <div class="auth-wrap">
+        <div class="auth-card">
+            <h1>Create Account</h1>
+            <p class="subtitle">Sign up to get started with Career Pulse</p>
+
+            <form method="POST">
+                {% csrf_token %}
+                {{ form }}
+                <button type="submit">Register</button>
+            </form>
+
+            <p class="switch-link">Already have an account? <a href="{% url 'user-login' %}">Login</a></p>
+        </div>
+    </div>
+{% endblock %}
