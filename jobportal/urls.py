@@ -33,5 +33,6 @@ def admin2(request):
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("admin2/", admin2),
-    path("", include("portal.urls"))
+    path("", include("portal.urls")),
+    path("api/v1/", include("portal.API.V1.urls"))
 ]

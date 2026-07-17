@@ -34,8 +34,7 @@ class Applicant(models.Model):
     email = models.EmailField()
     cv = models.FileField(upload_to="cvs/")
     status = models.CharField(
-        choices=STATUS, max_length=63, default="pending"
-    )
+        choices=STATUS, max_length=63, default="pending" ,null=True, blank=True)
     user = models.ForeignKey(
         User, related_name="applicant", on_delete=models.CASCADE,
         blank=True, null=True
