@@ -18,12 +18,11 @@ def job_detail(request, pk):
 
 @login_required # decorators
 def handle_applicant(request, pk):
-    print(request.user)
     form = ApplicantForm(request.POST, request.FILES)
     if form.is_valid():
-        print(form.cleaned_data)
-        obj = form.save()
-        obj.user = request.user 
+        obj = form.save(commit=False)
+        obj.job = Job.objects.get(id=pk)
+        obj.user = request.user
         obj.save()
     else:
         print(form.errors)
@@ -89,8 +88,7 @@ def user_register_view(request):
             return redirect("/register")
     else:
         form = UserRegisterForm()
-        print("form", form)
-        return render(request, "register.html", {"form": form})
+    return render(request, "register.html", {"form": form})
 
     
 def user_login_view(request):
