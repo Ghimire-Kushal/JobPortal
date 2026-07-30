@@ -3,7 +3,7 @@ from modulefinder import test
 from django.contrib import admin
 
 # Register your models here.
-# test?   
+# test?   sa
 # testings
 from .models import Job, Company
 
